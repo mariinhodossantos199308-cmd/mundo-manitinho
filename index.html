@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki Oficial | Mundo Manitinho</title>
+    <!-- Fontes e Ícones Profissionais -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-principal: #0f111a;
+            --bg-card: #171a26;
+            --bg-sidebar: #1e2235;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #2d3142;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar / Navegação */
+        aside {
+            width: 280px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .wiki-title {
+            padding: 24px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-container {
+            padding: 15px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px 15px;
+            background: var(--bg-principal);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-main);
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-box:focus {
+            border-color: var(--accent-color);
+        }
+
+        .nav-group {
+            padding: 10px 0;
+        }
+
+        .nav-group-title {
+            padding: 5px 24px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .nav-link {
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--bg-card);
+            color: var(--accent-color);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 20px;
+        }
+
+        /* Área de Conteúdo Principal */
+        main {
+            margin-left: 280px;
+            flex: 1;
+            width: calc(100% - 280px);
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Layout de Infobox (Padrão Wiki) */
+        .wiki-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .wiki-grid { grid-template-columns: 1fr; }
+            body { flex-direction: column; }
+            aside { width: 100%; height: auto; position: relative; }
+            main { margin-left: 0; width: 100%; padding: 20px; }
+        }
+
+        .article-text p {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #e5e7eb;
+        }
+
+        .article-text h3 {
+            margin: 25px 0 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+            color: var(--text-main);
+        }
+
+        /* Painel Lateral (Infobox) */
+        .infobox {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            align-self: start;
+        }
+
+        .infobox-header {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--accent-color);
+        }
+
+        .wiki-image {
+            width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: cover;
+            margin: 15px 0;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-principal);
+        }
+
+        .infobox-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #1f2335;
+        }
+
+        .infobox-label {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .infobox-value {
+            text-align: right;
+            max-width: 60%;
+        }
+
+        /* Listas de Produção */
+        .prod-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        .prod-list li {
+            padding: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            margin-bottom: 8px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Cards da Home */
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .card i {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside>
+        <div class="wiki-title">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Manitinho Wiki
+        </div>
+        <div class="search-container">
+            <input type="text" id="wikiSearch" class="search-box" placeholder="Pesquisar..." onkeyup="searchWiki()">
+        </div>
+        
+        <div class="nav-group">
+            <div class="nav-group-title">Navegação</div>
+            <a class="nav-link active" onclick="showSection('home')"><i class="fa-solid fa-house"></i> Início</a>
+            <a class="nav-link" onclick="showSection('producao')"><i class="fa-solid fa-clapperboard"></i> Produção & Equipe</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-group-title">Entidade Suprema</div>
+            <a class="nav-link" onclick="showSection('manitinho')"><i class="fa-solid fa-crown"></i> Manitinho</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-group-title">Principais</div>
+            <a class="nav-link" onclick="showSection('ciborgue')"><i class="fa-solid fa-robot"></i> Ciborgue</a>
+            <a class="nav-link" onclick="showSection('laura')"><i class="fa-solid fa-heart"></i> Laura</a>
+            <a class="nav-link" onclick="showSection('lucas')"><i class="fa-solid fa-face-grimace"></i> Lucas</a>
+            <a class="nav-link" onclick="showSection('spectre')"><i class="fa-solid fa-laptop-code"></i> Spectre</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-group-title">Secundários</div>
+            <a class="nav-link" onclick="showSection('kayla')"><i class="fa-solid fa-hand-fist"></i> Kayla</a>
+            <a class="nav-link" onclick="showSection('nicolas')"><i class="fa-solid fa-bed"></i> Nicolas</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-group-title">Ameaças</div>
+            <a class="nav-link" onclick="showSection('eclipsa')"><i class="fa-solid fa-moon"></i> Eclipsa</a>
+            <a class="nav-link" onclick="showSection('gosma')"><i class="fa-solid fa-biohazard"></i> Gosma Preta</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-group-title">Cenários</div>
+            <a class="nav-link" onclick="showSection('loc-casa')"><i class="fa-solid fa-couch"></i> A Casa Confortável</a>
+            <a class="nav-link" onclick="showSection('loc-vazio')"><i class="fa-solid fa-border-none"></i> O Vazio</a>
+            <a class="nav-link" onclick="showSection('loc-cristal')"><i class="fa-solid fa-gem"></i> Sala do Cristal</a>
+        </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
+        
+        <!-- HOME SECTION -->
+        <section id="home" class="content-section active">
+            <h1>Mundo Manitinho: Guia Definitivo</h1>
+            <p class="subtitle">Enciclopédia oficial e central de dados da série de animação.</p>
+            <hr style="border-color: var(--border-color); margin-bottom: 25px;">
+            
+            <h3>A Premissa Central</h3>
+            <p style="line-height: 1.8; margin-top: 15px; color: #e5e7eb;">
+                A história se passa em uma casa onde o Manitinho vive com os personagens principais e secundários, enquanto os vilões tentam atacá-los do lado de fora. Toda a comédia e a tensão funcionam na base da convivência forçada e da memória frágil: os personagens precisam aprender a lidar com um "Deus" que apaga a mente deles a cada estalo de dedos, enquanto o Manitinho tenta viver uma vida comum sem destruir as paredes da residência por pura birra.
+            </p>
+
+            <div class="home-grid">
+                <div class="card" onclick="showSection('manitinho')">
+                    <i class="fa-solid fa-bolt-lightning"></i>
+                    <h3>Personagens</h3>
+                    <p>Explore as habilidades, funções e segredos de todos os residentes e ameaças externas.</p>
+                </div>
+                <div class="card" onclick="showSection('loc-casa')">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <h3>Cenários & Locais</h3>
+                    <p>Viaje da Casa Confortável do dia a dia até o infinito e misterioso Vazio.</p>
+                </div>
+                <div class="card" onclick="showSection('producao')">
+                    <i class="fa-solid fa-film"></i>
+                    <h3>Produção & Elenco</h3>
+                    <p>Veja quem faz a série acontecer por trás das câmeras, dubladores e curiosidades.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO DE PRODUÇÃO E BASTIDORES -->
+        <section id="producao" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>Produção & Bastidores</h1>
+                    <p class="subtitle">A criação e a equipe técnica por trás do Mundo Manitinho</p>
+                    
+                    <h3>Equipe Técnica e Criativa</h3>
+                    <p>O desenvolvimento da série conta com uma estrutura organizada de funções para trazer o universo à vida de forma consistente:</p>
+                    <ul class="prod-list">
+                        <li><span><strong>Direção Geral & Roteiro:</strong> Arthur Marinho</span><span style="color: var(--accent-color);"></span></li>
+                        <li><span><strong>Design de Personagens:</strong> Emilly Cruz</span><span style="color: var(--text-muted);"></span></li>
+                        <li><span><strong>Animação & Pós-Produção:</strong> Equipe de Animação</span><span style="color: var(--text-muted);">Planejamento</span></li>
+                    </ul>
+
+                    <h3>Elenco de Vozes (Dublagem Oficial)</h3>
+                    <p>Os personagens ganham vida através de um talentoso time de dubladores que moldam a personalidade de cada morador e vilão:</p>
+                    <ul class="prod-list">
+                        <li><span><strong>Arthur Marinho:</strong> Manitinho / Gosma Preta (Com modulador)</span></li>
+                        <li><span><strong>Nicolas Lima:</strong> Ciborgue / Nicolas (Double Cast)</span></li>
+                        <li><span><strong>Laura Gabrielly:</strong> Laura</span></li>
+                        <li><span><strong>Luis Felipe:</strong> Lucas</span></li>
+                        <li><span><strong>David Carvalho:</strong> Spectre</span></li>
+                        <li><span><strong>Emilly Cruz:</strong> Kayla / Eclipsa (Double Cast)</span></li>
+                    </ul>
+
+                    <h3>Segredos e Curiosidades da Série</h3>
+                    <p><strong>1. Metalinguagem Ativa:</strong> O personagem Spectre atua como o editor dos vídeos dentro do próprio desenho. Isso significa que erros de gravação ou efeitos visuais na animação podem ser explicados como piadas dele manipulando o arquivo.</p>
+                    <p><strong>2. Desafio do Double Cast:</strong> Dois dubladores fazem papéis duplos geniais. O Nicolas Lima dubla o racional Ciborgue e o preguiçoso Nicolas, enquanto a Emilly Cruz dubla a estressada Kayla e a misteriosa vilã Eclipsa. Isso cria dinâmicas e contrastes incríveis de atuação!</p>
+                    <p><strong>3. Voz Temática da Gosma:</strong> A Gosma Preta é dublada pelo próprio dublador do Manitinho (Arthur Marinho), mas usando um filtro de pitch grosso e efeitos digitais, sugerindo uma ligação misteriosa ou uma distorção criada a partir dos próprios poderes cósmicos do protagonista.</p>
+                </div>
+                
+                <div class="infobox">
+                    <div class="infobox-header">Ficha Técnica</div>
+                    <img src="producao_logo.png" alt="Logo de Produção" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Formato:</span><span class="infobox-value">Série de Animação</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Gênero:</span><span class="infobox-value">Comédia / Caos / Magia</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Inspirações:</span><span class="infobox-value">TADC / Mundo Torajo</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Fase Atual:</span><span class="infobox-value" style="color: #fbbf24; font-weight: bold;">Pré-Produção</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- [O resto das seções permanece idêntico ao código anterior: Manitinho, Ciborgue, Laura, Lucas, Spectre, Kayla, Nicolas, Eclipsa, Gosma, Cenários] -->
+        <!-- MANITINHO -->
+        <section id="manitinho" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>Manitinho</h1>
+                    <p class="subtitle">O Protagonista e Entidade Suprema</p>
+                    <p>Manitinho é o protagonista, narrador supremo e o ser mais forte de todo o universo da série. Extremamente caótico, engraçado, orgulhoso e egocêntrico, ele adora ser o centro das atenções e que inflem seu ego a todo momento.</p>
+                    <h3>Habilidades Conhecidas</h3>
+                    <p>Pode alterar a realidade à sua volta, voar, teletransportar objetos e abrir fendas/portais direto para a dimensão do Vazio. Sua marca registrada é o <strong>Estalar de Dedos</strong>: um mecanismo que apaga instantaneamente da mente de qualquer pessoa todas as informações sobre ele, podendo devolvê-las quando bem entender.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">Manitinho</div>
+                    <img src="manitinho.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Função:</span><span class="infobox-value">Protagonista</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Gênero:</span><span class="infobox-value">Masculino</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">Arthur Marinho</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CIBORGUE -->
+        <section id="ciborgue" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>Ciborgue</h1>
+                    <p class="subtitle">O Cérebro Técnico da Casa</p>
+                    <p>Ciborgue atua como o membro mais racional, analítico e lógico do grupo. Ele é o pilar que tenta manter a sanidade matemática e a ordem dentro da residência perante as loucuras do Manitinho.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">Ciborgue</div>
+                    <img src="ciborgue.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,79m</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">Nicolas Lima</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LAURA -->
+        <section id="laura" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>Laura</h1>
+                    <p class="subtitle">O Coração do Grupo</p>
+                    <p>Laura é a definição de doçura, otimismo e acolhimento na casa. Extremamente leal, ela assumiu o posto autodeclarado de "fã número um" do Manitinho, validando suas ideias e cozinhando mimos para ele.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">Laura</div>
+                    <img src="laura.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,53m</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dubladora:</span><span class="infobox-value">Laura Gabrielly</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LUCAS -->
+        <section id="lucas" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>Lucas</h1>
+                    <p class="subtitle">O Alívio Cômico</p>
+                    <p>Lucas é expressivo, brincalhão e muito medroso. Ele entra em pânico com extrema facilidade e solta gritos caricatos, tornando-se o alvo perfeito das pegadinhas de Manitinho.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">Lucas</div>
+                    <img src="lucas.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,69m</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">Luis Felipe</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPECTRE -->
+        <section id="spectre" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>Spectre</h1>
+                    <p class="subtitle">O Editor Meta-Linguístico</p>
+                    <p>Inteligente e altamente sarcástico, ele detém o título de mestre supremo das trollagens. É o único morador audacioso o suficiente para bater de frente com a magia do Manitinho usando pura tecnologia computacional.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">Spectre</div>
+                    <img src="spectre.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,78m</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">David Carvalho</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KAYLA -->
+        <section id="kayla" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>Kayla</h1>
+                    <p class="subtitle">A Força Reguladora</p>
+                    <p>Brava, mandona e com tolerância zero para molequices. Kayla é a única completamente indiferente aos poderes divinos de Manitinho, brigando com ele por louça suja ou bagunça sem temer represálias.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">Kayla</div>
+                    <img src="kayla.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,61m</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dubladora:</span><span class="infobox-value">Emilly Cruz</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NICOLAS -->
+        <section id="nicolas" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>Nicolas</h1>
+                    <p class="subtitle">O Procrastinador Profissional</p>
+                    <p>O ápice da preguiça. Um dorminhoco profissional capaz de ignorar apocalipses, ataques ou magias desde que consiga continuar tirando seu cochilo diário.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">Nicolas</div>
+                    <img src="nicolas.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,58m</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">Nicolas Lima</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ECLIPSA -->
+        <section id="eclipsa" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>Eclipsa</h1>
+                    <p class="subtitle">A Mestra do Disfarce</p>
+                    <p>Uma vilã elegante cujas vestes remetem à lua. Malvada e calculista, ela sabe tudo sobre os poderes de Manitinho e deseja tomar o Cristal Mágico para alcançar a soberania absoluta.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">Eclipsa</div>
+                    <img src="eclipsa.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Tipo:</span><span class="infobox-value">Antagonista</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dubladora:</span><span class="infobox-value">Emilly Cruz</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GOSMA PRETA -->
+        <section id="gosma" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>Gosma Preta</h1>
+                    <p class="subtitle">O Infiltrador Maleável</p>
+                    <p>Uma criatura sinistra de matéria escura que pode falar. Atua como o elemento de força física enviado pelos vilões para sabotar a estabilidade e a união dos moradores da casa.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">Gosma Preta</div>
+                    <img src="gosma.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Tipo:</span><span class="infobox-value">Monstro</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">Arthur Marinho</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CENÁRIO: A CASA CONFORTÁVEL -->
+        <section id="loc-casa" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>A Casa Confortável</h1>
+                    <p class="subtitle">O QG e Lar dos Personagens</p>
+                    <p>É o cenário principal de toda a série. Trata-se de uma residência espaçosa, aconchegante e mobiliada para acomodar o cotidiano de todos os moradores. Possui uma sala acolhedora, uma cozinha sempre abastecida (frequentemente usada por Laura) e ambientes individuais para o elenco.</p>
+                    <h3>Segurança vs. Caos</h3>
+                    <p>Embora devesse ser um porto seguro contra as ameaças de Eclipsa e da Gosma Preta do lado de fora, a casa é frequentemente o epicentro das catástrofes internas causadas pela birra ou demonstrações espalhafatosas de poder do Manitinho, que não hesita em sumir com paredes inteiras quando é contrariado.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">A Casa</div>
+                    <img src="casa.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Tipo:</span><span class="infobox-value">Residencial</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Status:</span><span class="infobox-value">Ativo (Sempre em Reforma)</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Moradores:</span><span class="infobox-value">Elenco Principal</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CENÁRIO: O VAZIO -->
+        <section id="loc-vazio" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>O Vazio</h1>
+                    <p class="subtitle">A Dimensão Própria do Deus Caótico</p>
+                    <p>O Vazio é um plano existencial alternativo controlado integralmente por Manitinho. Diferente do espaço sideral ou de zonas escuras comuns, este lugar é caracterizado por um <strong>branco absoluto</strong>, infinito e sem referências geográficas visuais óbvias.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">O Vazio</div>
+                    <img src="vazio.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Tipo:</span><span class="infobox-value">Dimensão Mágica</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Cor Escopo:</span><span class="infobox-value">Branco Absoluto</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Governante:</span><span class="infobox-value">Manitinho</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CENÁRIO: SALA DO CRISTAL -->
+        <section id="loc-cristal" class="content-section">
+            <div class="wiki-grid">
+                <div class="article-text">
+                    <h1>A Sala do Cristal Mágico</h1>
+                    <p class="subtitle">O Ponto Mais Protegido do Universo</p>
+                    <p>Escondida em uma dobra oculta dentro do próprio Vazio, a Sala do Cristal é uma estrutura arquitetônica mística projetada por Manitinho para um único propósito: salvaguardar o lendário Cristal Mágico, a relíquia geradora de energia cósmica absoluta.</p>
+                </div>
+                <div class="infobox">
+                    <div class="infobox-header">Sala do Cristal</div>
+                    <img src="sala_cristal.png" alt="Aguardando Arte Humana" class="wiki-image">
+                    <div class="infobox-row"><span class="infobox-label">Tipo:</span><span class="infobox-value">Câmara Mística</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Localização:</span><span class="infobox-value">Sub-região do Vazio</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Relíquia:</span><span class="infobox-value">Cristal Mágico</span></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- LOGICA JAVASCRIPT -->
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            const activeSection = document.getElementById(sectionId);
+            if(activeSection) {
+                activeSection.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            navLinks.forEach(link => {
+                if(link.getAttribute('onclick') && link.getAttribute('onclick').includes(sectionId)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function searchWiki() {
+            let input = document.getElementById('wikiSearch').value.toLowerCase();
+            let links = document.querySelectorAll('.nav-link');
+            
+            links.forEach(link => {
+                let text = link.innerText.toLowerCase();
+                if(text.includes(input) || link.getAttribute('onclick').includes(input)) {
+                    link.style.display = "flex";
+                } else {
+                    link.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html></body>
+</html>
