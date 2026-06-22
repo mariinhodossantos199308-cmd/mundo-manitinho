@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redes Sociais | Mundo Marinho</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0f111a;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #171a26;
+            border: 1px solid #2d3142;
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        h1 { font-size: 1.8rem; margin-bottom: 5px; color: #6366f1; }
+        p { color: #9ca3af; margin-bottom: 25px; font-size: 0.95rem; }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            background: #1e2235;
+            border: 1px solid #2d3142;
+            padding: 14px 20px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #f3f4f6;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .social-btn:hover {
+            border-color: #6366f1;
+            background: #252a41;
+            transform: translateY(-2px);
+        }
+        .social-btn i { font-size: 1.3rem; margin-right: 15px; width: 25px; text-align: center; }
+        .fa-youtube { color: #ff0000; }
+        .fa-instagram { color: #e1306c; }
+        
+        .no-social {
+            background: rgba(255,255,255,0.02);
+            border: 1px dashed #2d3142;
+            color: #63687e;
+        }
+        .no-social i { color: #63687e; }
+        .no-social:hover { transform: none; border-color: #2d3142; background: rgba(255,255,255,0.02); cursor: not-allowed;}
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+        .back-link:hover { color: #6366f1; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 id="membro-nome">Carregando...</h1>
+        <p>Redes Sociais Oficiais</p>
+        
+        <div id="social-box">
+            <!-- Os botões inteligentes vão aparecer aqui via JavaScript -->
+        </div>
+
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar para a Wiki</a>
+    </div>
+
+    <script>
+        // Banco de dados interno com as contas das pessoas (Altere aqui os @ ou canais de cada um)
+        const dbRedes = {
+            "Arthur Marinho": {
+                youtube: "@mariinh0_night200", // Só coloque o nome/identificador do canal do YouTube
+                instagram: null // Só coloque o usuário do Instagram
+            },
+            "Emilly Cruz": {
+                youtube: null,
+                instagram: null // Se não tiver, coloque null para exibir que não possui
+            },
+            "Nicolas Lima": {
+                youtube: null,
+                instagram: null
+            },
+            "Laura Gabrielly": {
+                youtube: null,
+                instagram: null
+            },
+            "Luis Felipe": {
+                youtube: null,
+                instagram: null
+            },
+            "David Carvalho": {
+                youtube: "@david11craft",
+                instagram: null
+            }
+        };
+
+        // Pegar o nome enviado pela URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const membro = urlParams.get('membro');
+
+        if(membro && dbRedes[membro]) {
+            document.getElementById('membro-nome').innerText = membro;
+            const redes = dbRedes[membro];
+            let htmlContent = "";
+
+            // Lógica Inteligente para o YouTube
+            if(redes.youtube) {
+                htmlContent += `<a href="https://www.youtube.com/@${redes.youtube}" target="_blank" class="social-btn">
+                    <i class="fa-brands fa-youtube"></i> YouTube (@${redes.youtube})
+                </a>`;
+            } else {
+                htmlContent += `<div class="social-btn no-social">
+                    <i class="fa-brands fa-youtube"></i> Não possui canal no YouTube
+                </div>`;
+            }
+
+            // Lógica Inteligente para o Instagram
+            if(redes.instagram) {
+                htmlContent += `<a href="https://www.instagram.com/${redes.instagram}" target="_blank" class="social-btn">
+                    <i class="fa-brands fa-instagram"></i> Instagram (@${redes.instagram})
+                </a>`;
+            } else {
+                htmlContent += `<div class="social-btn no-social">
+                    <i class="fa-brands fa-instagram"></i> Não possui Instagram
+                </div>`;
+            }
+
+            document.getElementById('social-box').innerHTML = htmlContent;
+        } else {
+            document.getElementById('membro-nome').innerText = "Membro não encontrado";
+            document.getElementById('social-box').innerHTML = `<p>Escolha um integrante válido na página da Wiki.</p>`;
+        }
+    </script>
+</body>
+</html>
