@@ -173,6 +173,19 @@
             color: var(--text-main);
         }
 
+        /* Links de membros clicáveis */
+        .membro-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .membro-link:hover {
+            color: #818cf8;
+            text-decoration: underline;
+        }
+
         /* Painel Lateral (Infobox) */
         .infobox {
             background: var(--bg-card);
@@ -301,7 +314,7 @@
             <a class="nav-link" onclick="showSection('ciborgue')"><i class="fa-solid fa-robot"></i> Ciborgue</a>
             <a class="nav-link" onclick="showSection('laura')"><i class="fa-solid fa-heart"></i> Laura</a>
             <a class="nav-link" onclick="showSection('lucas')"><i class="fa-solid fa-face-grimace"></i> Lucas</a>
-            <a class="nav-link" onclick="showSection('spectre')"><i class="fa-solid fa-laptop-code"></i> Spectre</a>
+            <a class="nav-link" onclick="showSection('elliot')"><i class="fa-solid fa-laptop-code"></i> Elliot</a>
         </div>
 
         <div class="nav-group">
@@ -367,24 +380,23 @@
                     <h3>Equipe Técnica e Criativa</h3>
                     <p>O desenvolvimento da série conta com uma estrutura organizada de funções para trazer o universo à vida de forma consistente:</p>
                     <ul class="prod-list">
-                        <li><span><strong>Direção Geral & Roteiro:</strong> Arthur Marinho</span><span style="color: var(--accent-color);"></span></li>
-                        <li><span><strong>Design de Personagens:</strong> Emilly Cruz</span><span style="color: var(--text-muted);"></span></li>
-                        <li><span><strong>Animação & Pós-Produção:</strong> Equipe de Animação</span><span style="color: var(--text-muted);">Planejamento</span></li>
+                        <li><span><strong>Direção Geral & Roteiro:</strong> <a class="membro-link" onclick="goSocial('Arthur Marinho')">Arthur Marinho</a></span></li>
+                        <li><span><strong>Design de Personagens:</strong> <a class="membro-link" onclick="goSocial('Emilly Cruz')">Emilly Cruz</a></span></li>
                     </ul>
 
                     <h3>Elenco de Vozes (Dublagem Oficial)</h3>
                     <p>Os personagens ganham vida através de um talentoso time de dubladores que moldam a personalidade de cada morador e vilão:</p>
                     <ul class="prod-list">
-                        <li><span><strong>Arthur Marinho:</strong> Marinho / Gosma Preta (Com modulador)</span></li>
-                        <li><span><strong>Nicolas Lima:</strong> Ciborgue / Nicolas (Double Cast)</span></li>
-                        <li><span><strong>Laura Gabrielly:</strong> Laura</span></li>
-                        <li><span><strong>Luis Felipe:</strong> Lucas</span></li>
-                        <li><span><strong>David Carvalho:</strong> Spectre</span></li>
-                        <li><span><strong>Emilly Cruz:</strong> Kayla / Eclipsa (Double Cast)</span></li>
+                        <li><span><strong>Marinho / Gosma Preta:</strong> <a class="membro-link" onclick="goSocial('Arthur Marinho')">Arthur Marinho</a></span></li>
+                        <li><span><strong>Ciborgue / Nicolas:</strong> <a class="membro-link" onclick="goSocial('Nicolas Lima')">Nicolas Lima</a></span></li>
+                        <li><span><strong>Laura:</strong> <a class="membro-link" onclick="goSocial('Laura Gabrielly')">Laura Gabrielly</a></span></li>
+                        <li><span><strong>Lucas:</strong> <a class="membro-link" onclick="goSocial('Luis Felipe')">Luis Felipe</a></span></li>
+                        <li><span><strong>Elliot:</strong> <a class="membro-link" onclick="goSocial('David Carvalho')">David Carvalho</a></span></li>
+                        <li><span><strong>Kayla / Eclipsa:</strong> <a class="membro-link" onclick="goSocial('Emilly Cruz')">Emilly Cruz</a></span></li>
                     </ul>
 
                     <h3>Segredos e Curiosidades da Série</h3>
-                    <p><strong>1. Metalinguagem Ativa:</strong> O personagem Spectre atua como o editor dos vídeos dentro do próprio desenho. Isso significa que erros de gravação ou efeitos visuais na animação podem ser explicados como piadas dele manipulando o arquivo.</p>
+                    <p><strong>1. Metalinguagem Ativa:</strong> O personagem Elliot atua como o editor dos vídeos dentro do próprio desenho. Isso significa que erros de gravação ou efeitos visuais na animação podem ser explicados como piadas dele manipulando o arquivo.</p>
                     <p><strong>2. Desafio do Double Cast:</strong> Dois dubladores fazem papéis duplos geniais. O Nicolas Lima dubla o racional Ciborgue e o preguiçoso Nicolas, enquanto a Emilly Cruz dubla a estressada Kayla e a misteriosa vilã Eclipsa. Isso cria dinâmicas e contrastes incríveis de atuação!</p>
                     <p><strong>3. Voz Temática da Gosma:</strong> A Gosma Preta é dublada pelo próprio dublador do Marinho (Arthur Marinho), mas usando um filtro de pitch grosso e efeitos digitais, sugerindo uma ligação misteriosa ou uma distorção criada a partir dos próprios poderes cósmicos do protagonista.</p>
                 </div>
@@ -400,7 +412,6 @@
             </div>
         </section>
 
-        <!-- [O resto das seções permanece idêntico ao código anterior: Marinho, Ciborgue, Laura, Lucas, Spectre, Kayla, Nicolas, Eclipsa, Gosma, Cenários] -->
         <!-- MARINHO -->
         <section id="marinho" class="content-section">
             <div class="wiki-grid">
@@ -416,7 +427,7 @@
                     <img src="marinho.png" alt="Aguardando Arte Humana" class="wiki-image">
                     <div class="infobox-row"><span class="infobox-label">Função:</span><span class="infobox-value">Protagonista</span></div>
                     <div class="infobox-row"><span class="infobox-label">Gênero:</span><span class="infobox-value">Masculino</span></div>
-                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">Arthur Marinho</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value"><a class="membro-link" onclick="goSocial('Arthur Marinho')">Arthur Marinho</a></span></div>
                 </div>
             </div>
         </section>
@@ -433,7 +444,7 @@
                     <div class="infobox-header">Ciborgue</div>
                     <img src="ciborgue.png" alt="Aguardando Arte Humana" class="wiki-image">
                     <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,79m</span></div>
-                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">Nicolas Lima</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value"><a class="membro-link" onclick="goSocial('Nicolas Lima')">Nicolas Lima</a></span></div>
                 </div>
             </div>
         </section>
@@ -450,7 +461,7 @@
                     <div class="infobox-header">Laura</div>
                     <img src="laura.png" alt="Aguardando Arte Humana" class="wiki-image">
                     <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,53m</span></div>
-                    <div class="infobox-row"><span class="infobox-label">Dubladora:</span><span class="infobox-value">Laura Gabrielly</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dubladora:</span><span class="infobox-value"><a class="membro-link" onclick="goSocial('Laura Gabrielly')">Laura Gabrielly</a></span></div>
                 </div>
             </div>
         </section>
@@ -467,24 +478,24 @@
                     <div class="infobox-header">Lucas</div>
                     <img src="lucas.png" alt="Aguardando Arte Humana" class="wiki-image">
                     <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,69m</span></div>
-                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">Luis Felipe</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value"><a class="membro-link" onclick="goSocial('Luis Felipe')">Luis Felipe</a></span></div>
                 </div>
             </div>
         </section>
 
-        <!-- SPECTRE -->
-        <section id="spectre" class="content-section">
+        <!-- ELLIOT -->
+        <section id="elliot" class="content-section">
             <div class="wiki-grid">
                 <div class="article-text">
-                    <h1>Spectre</h1>
+                    <h1>Elliot</h1>
                     <p class="subtitle">O Editor Meta-Linguístico</p>
                     <p>Inteligente e altamente sarcástico, ele detém o título de mestre supremo das trollagens. É o único morador audacioso o suficiente para bater de frente com a magia do Marinho usando pura tecnologia computacional.</p>
                 </div>
                 <div class="infobox">
-                    <div class="infobox-header">Spectre</div>
+                    <div class="infobox-header">Elliot</div>
                     <img src="spectre.png" alt="Aguardando Arte Humana" class="wiki-image">
                     <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,78m</span></div>
-                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">David Carvalho</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value"><a class="membro-link" onclick="goSocial('David Carvalho')">David Carvalho</a></span></div>
                 </div>
             </div>
         </section>
@@ -495,13 +506,13 @@
                 <div class="article-text">
                     <h1>Kayla</h1>
                     <p class="subtitle">A Força Reguladora</p>
-                    <p>Brava, mandona e com tolerância zero para molequices. Kayla é a única completamente indiferente aos poderes divinos de Marinho, brigando com ele por louça suja ou bagunça sem temer represálias.</p>
+                    <p>Brava, mandona e com eficiência zero para molequices. Kayla é a única completamente indiferente aos poderes divinos de Marinho, brigando com ele por louça suja ou bagunça sem temer represálias.</p>
                 </div>
                 <div class="infobox">
                     <div class="infobox-header">Kayla</div>
                     <img src="kayla.png" alt="Aguardando Arte Humana" class="wiki-image">
                     <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,61m</span></div>
-                    <div class="infobox-row"><span class="infobox-label">Dubladora:</span><span class="infobox-value">Emilly Cruz</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dubladora:</span><span class="infobox-value"><a class="membro-link" onclick="goSocial('Emilly Cruz')">Emilly Cruz</a></span></div>
                 </div>
             </div>
         </section>
@@ -518,7 +529,7 @@
                     <div class="infobox-header">Nicolas</div>
                     <img src="nicolas.png" alt="Aguardando Arte Humana" class="wiki-image">
                     <div class="infobox-row"><span class="infobox-label">Altura:</span><span class="infobox-value">1,58m</span></div>
-                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">Nicolas Lima</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value"><a class="membro-link" onclick="goSocial('Nicolas Lima')">Nicolas Lima</a></span></div>
                 </div>
             </div>
         </section>
@@ -535,7 +546,7 @@
                     <div class="infobox-header">Eclipsa</div>
                     <img src="eclipsa.png" alt="Aguardando Arte Humana" class="wiki-image">
                     <div class="infobox-row"><span class="infobox-label">Tipo:</span><span class="infobox-value">Antagonista</span></div>
-                    <div class="infobox-row"><span class="infobox-label">Dubladora:</span><span class="infobox-value">Emilly Cruz</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dubladora:</span><span class="infobox-value"><a class="membro-link" onclick="goSocial('Emilly Cruz')">Emilly Cruz</a></span></div>
                 </div>
             </div>
         </section>
@@ -552,7 +563,7 @@
                     <div class="infobox-header">Gosma Preta</div>
                     <img src="gosma.png" alt="Aguardando Arte Humana" class="wiki-image">
                     <div class="infobox-row"><span class="infobox-label">Tipo:</span><span class="infobox-value">Monstro</span></div>
-                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value">Arthur Marinho</span></div>
+                    <div class="infobox-row"><span class="infobox-label">Dublador:</span><span class="infobox-value"><a class="membro-link" onclick="goSocial('Arthur Marinho')">Arthur Marinho</a></span></div>
                 </div>
             </div>
         </section>
@@ -583,7 +594,7 @@
                 <div class="article-text">
                     <h1>O Vazio</h1>
                     <p class="subtitle">A Dimensão Própria do Deus Caótico</p>
-                    <p>O Vazio é um plano existencial alternativo controlado integralmente por Marinho. Diferente do espaço sideral ou de zonas escuras comuns, este lugar é caracterizado por um <strong>branco absoluto</strong>, infinito e sem referências geográficas visuais óbvias.</p>
+                    <p>O Vazio é um plano existencial alternativo controlado integralmente por Marinho. Diferente do espaço sideral ou de zonas escuras comuns, este lugar é caracterizado por um <strong>branco absoluto</strong>, infinito e sem referências geográficas visuais óbevias.</p>
                 </div>
                 <div class="infobox">
                     <div class="infobox-header">O Vazio</div>
@@ -650,13 +661,12 @@
                 }
             });
         }
+
+        // Função Inteligente de Redirecionamento
+        function goSocial(nomeMembro) {
+            // Passa o nome de quem foi clicado na URL para o arquivo social.html ler automaticamente
+            window.location.href = `social.html?membro=${encodeURIComponent(nomeMembro)}`;
+        }
     </script>
 </body>
-</html></body>
 </html>
-       }
-    </script>
-</body>
-</html></body>
-</html>
->
